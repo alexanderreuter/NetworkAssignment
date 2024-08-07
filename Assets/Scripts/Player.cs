@@ -8,56 +8,101 @@ using UnityEngine.InputSystem;
 public class Player : NetworkBehaviour
 {
     private InputActions inputActions;
+    private NetworkVariable<Vector2> moveInput;
+    [SerializeField] private float speed = 20f;
 
-    private Vector2 moveInput;
-    private float speed = 20;
-
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform shootPoint;
+    [SerializeField] private float bulletSpeed = 1f;
+    
     private void Awake()
     {
         inputActions = new InputActions();
+        moveInput = new NetworkVariable<Vector2>();
     }
 
-    private void OnEnable()
+    public override void OnNetworkSpawn()
     {
-        inputActions.Enable();
-        inputActions.Player.Move.performed += OnMove;
-        inputActions.Player.Move.canceled += OnStopMove;
-        inputActions.Player.Shoot.performed += OnShoot;
+        if (IsLocalPlayer)
+        {
+            inputActions.Enable();
+            inputActions.Player.Move.performed += OnMove;
+            inputActions.Player.Move.canceled += OnStopMove;
+            inputActions.Player.Shoot.performed += OnShoot;
+        }
     }
 
     private void OnDisable()
     {
+        if (IsLocalPlayer)
+        {
         inputActions.Player.Move.performed -= OnMove;
         inputActions.Player.Move.canceled -= OnStopMove;
         inputActions.Player.Shoot.performed -= OnShoot;
         inputActions.Disable();
+        }
     }
 
     private void OnMove(InputAction.CallbackContext ctx)
     {
-        moveInput = ctx.ReadValue<Vector2>();
+        if (IsLocalPlayer)
+        {
+            Vector2 input = ctx.ReadValue<Vector2>();
+            MoveServerRpc(input);
+            moveInput.Value = input;
+        }
     }
 
     private void OnStopMove(InputAction.CallbackContext ctx)
     {
-        moveInput = Vector2.zero;
+        if (IsLocalPlayer)
+        {
+            Vector2 input = Vector2.zero;
+            MoveServerRpc(input);
+            moveInput.Value = input;
+        }
     }
 
     private void OnShoot(InputAction.CallbackContext ctx)
     {
-        Debug.Log("Pew");
+        if (IsLocalPlayer)
+        {
+            ShootServerRpc();
+        }
     }
     
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        transform.position += (Vector3)moveInput * speed * Time.deltaTime;
+        if (IsLocalPlayer || IsServer)
+        {
+            transform.position += (Vector3)moveInput.Value * speed * Time.deltaTime;
+        }
+    }
+
+    [ServerRpc]
+    private void MoveServerRpc(Vector2 input)
+    {
+        moveInput.Value = input;
+    }
+
+    [ServerRpc]
+    private void ShootServerRpc()
+    {
+        if (bulletPrefab && shootPoint)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, shootPoint.rotation);
+            
+            NetworkObject bulletNetworkObject = bullet.GetComponent<NetworkObject>();
+            if (bulletNetworkObject != null)
+            {
+                bulletNetworkObject.Spawn(); 
+            }
+            
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = shootPoint.up * bulletSpeed;
+            }
+        }
     }
 }
