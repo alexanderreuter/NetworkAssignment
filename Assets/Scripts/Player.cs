@@ -83,7 +83,6 @@ public class Player : NetworkBehaviour
             transform.position += (Vector3)serverMoveInput.Value * speed * Time.deltaTime;
             transform.rotation = serverRotation.Value;
         }
-        
     }
 
     private void UpdateRotation()

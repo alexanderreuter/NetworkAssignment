@@ -35,6 +35,7 @@ public class Bullet : NetworkBehaviour
     {
         if (IsServer)
         {
+            Debug.Log("hej");
             Destroy(gameObject);
         }
     }
