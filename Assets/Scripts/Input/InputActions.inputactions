@@ -33,13 +33,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MousePos",
-                    "type": "Value",
-                    "id": "6e70ccae-78a0-4102-b670-e7a8619092be",
-                    "expectedControlType": "Vector2",
+                    "name": "Chat",
+                    "type": "Button",
+                    "id": "9aa5f7d3-a7aa-4317-a087-f3ae001989fc",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -122,12 +122,12 @@
                 },
                 {
                     "name": "",
-                    "id": "5b971faa-6911-4245-84dc-10a019048e4d",
-                    "path": "<Mouse>/position",
+                    "id": "87790267-ffac-4e3d-8bb8-68ab85d831f7",
+                    "path": "<Keyboard>/enter",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MousePos",
+                    "action": "Chat",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

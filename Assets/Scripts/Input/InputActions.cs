@@ -55,13 +55,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""MousePos"",
-                    ""type"": ""Value"",
-                    ""id"": ""6e70ccae-78a0-4102-b670-e7a8619092be"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""name"": ""Chat"",
+                    ""type"": ""Button"",
+                    ""id"": ""9aa5f7d3-a7aa-4317-a087-f3ae001989fc"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -144,12 +144,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""5b971faa-6911-4245-84dc-10a019048e4d"",
-                    ""path"": ""<Mouse>/position"",
+                    ""id"": ""87790267-ffac-4e3d-8bb8-68ab85d831f7"",
+                    ""path"": ""<Keyboard>/enter"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MousePos"",
+                    ""action"": ""Chat"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -163,7 +163,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
-        m_Player_MousePos = m_Player.FindAction("MousePos", throwIfNotFound: true);
+        m_Player_Chat = m_Player.FindAction("Chat", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -228,7 +228,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Menu;
-    private readonly InputAction m_Player_MousePos;
+    private readonly InputAction m_Player_Chat;
     public struct PlayerActions
     {
         private @InputActions m_Wrapper;
@@ -236,7 +236,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @Menu => m_Wrapper.m_Player_Menu;
-        public InputAction @MousePos => m_Wrapper.m_Player_MousePos;
+        public InputAction @Chat => m_Wrapper.m_Player_Chat;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -255,9 +255,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Menu.started += instance.OnMenu;
             @Menu.performed += instance.OnMenu;
             @Menu.canceled += instance.OnMenu;
-            @MousePos.started += instance.OnMousePos;
-            @MousePos.performed += instance.OnMousePos;
-            @MousePos.canceled += instance.OnMousePos;
+            @Chat.started += instance.OnChat;
+            @Chat.performed += instance.OnChat;
+            @Chat.canceled += instance.OnChat;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -271,9 +271,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Menu.started -= instance.OnMenu;
             @Menu.performed -= instance.OnMenu;
             @Menu.canceled -= instance.OnMenu;
-            @MousePos.started -= instance.OnMousePos;
-            @MousePos.performed -= instance.OnMousePos;
-            @MousePos.canceled -= instance.OnMousePos;
+            @Chat.started -= instance.OnChat;
+            @Chat.performed -= instance.OnChat;
+            @Chat.canceled -= instance.OnChat;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -296,6 +296,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnMenu(InputAction.CallbackContext context);
-        void OnMousePos(InputAction.CallbackContext context);
+        void OnChat(InputAction.CallbackContext context);
     }
 }

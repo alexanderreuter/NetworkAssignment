@@ -15,12 +15,15 @@ public class Player : NetworkBehaviour
     private Vector2 localMoveInput;
     private NetworkVariable<Vector2> serverMoveInput;
     private NetworkVariable<Quaternion> serverRotation;
+
+    private ChatManager chatManager;
     
     private void Awake()
     {
         inputActions = new InputActions();
         serverMoveInput = new NetworkVariable<Vector2>();
         serverRotation = new NetworkVariable<Quaternion>();
+        chatManager = FindObjectOfType<ChatManager>();
     }
 
     public override void OnNetworkSpawn()
@@ -31,6 +34,7 @@ public class Player : NetworkBehaviour
             inputActions.Player.Move.performed += OnMove;
             inputActions.Player.Move.canceled += OnStopMove;
             inputActions.Player.Shoot.performed += OnShoot;
+            inputActions.Player.Chat.performed += OnChat;
         }
     }
 
@@ -41,6 +45,7 @@ public class Player : NetworkBehaviour
         inputActions.Player.Move.performed -= OnMove;
         inputActions.Player.Move.canceled -= OnStopMove;
         inputActions.Player.Shoot.performed -= OnShoot;
+        inputActions.Player.Chat.performed -= OnChat;
         inputActions.Disable();
         }
     }
@@ -68,6 +73,19 @@ public class Player : NetworkBehaviour
         if (IsLocalPlayer)
         {
             ShootServerRpc();
+        }
+    }
+
+    private void OnChat(InputAction.CallbackContext ctx)
+    {
+        if (IsLocalPlayer)
+        {
+            chatManager.inputField.gameObject.SetActive(!chatManager.inputField.gameObject.activeSelf);
+            
+            if (chatManager.inputField.gameObject.activeSelf)
+                chatManager.inputField.ActivateInputField();
+            else
+                chatManager.inputField.DeactivateInputField();
         }
     }
     

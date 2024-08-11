@@ -59,14 +59,8 @@ public class NetworkManagerUI : MonoBehaviour
         
         disconnectButton.onClick.AddListener(() =>
         {
-            if (networkManager.IsServer)
-            {
-                networkManager.Shutdown();
-            }
-            else
-            {
-                networkManager.DisconnectClient(networkManager.LocalClientId); // Fix
-            }
+            // works for both server and client =)
+            networkManager.Shutdown();
         });
 
         inputActions.Player.Menu.performed += TogglePauseMenu;
