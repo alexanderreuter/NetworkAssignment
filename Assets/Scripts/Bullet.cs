@@ -7,6 +7,7 @@ public class Bullet : NetworkBehaviour
 {
     [SerializeField] private float speed = 20f;
     [SerializeField] private float lifetime = 5f;
+    private ulong playerID;
 
     private Rigidbody2D rb;
 
@@ -23,19 +24,30 @@ public class Bullet : NetworkBehaviour
         }
     }
 
-    public void Initialize(Vector2 direction)
+    public void Initialize(Vector2 direction, ulong playerID)
     {
         if (rb != null)
         {
             rb.velocity = direction * speed;
         }
+
+        this.playerID = playerID;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (IsServer)
         {
-            Debug.Log("hej");
+            if (collision.GetComponent<Player>())
+            {
+                NetworkManagerUI networkManagerUI = FindObjectOfType<NetworkManagerUI>();
+                
+                networkManagerUI.SetPlayerUIServerRpc(playerID, false, 1);
+                
+                Destroy(collision.gameObject);
+                
+            }
+            
             Destroy(gameObject);
         }
     }

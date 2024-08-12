@@ -72,7 +72,7 @@ public class Player : NetworkBehaviour
     {
         if (IsLocalPlayer)
         {
-            ShootServerRpc();
+            ShootServerRpc(NetworkManager.Singleton.LocalClientId);
         }
     }
 
@@ -81,11 +81,17 @@ public class Player : NetworkBehaviour
         if (IsLocalPlayer)
         {
             chatManager.inputField.gameObject.SetActive(!chatManager.inputField.gameObject.activeSelf);
-            
+
             if (chatManager.inputField.gameObject.activeSelf)
+            {
                 chatManager.inputField.ActivateInputField();
+                DisableGameplayInput();
+            }
             else
+            {
                 chatManager.inputField.DeactivateInputField();
+                EnableGameplayInput();
+            }
         }
     }
     
@@ -116,6 +122,20 @@ public class Player : NetworkBehaviour
         RotationServerRpc(localRotation);
     }
 
+    private void DisableGameplayInput()
+    {
+        inputActions.Player.Move.Disable();
+        inputActions.Player.Shoot.Disable();
+    }
+    
+    private void EnableGameplayInput()
+    {
+        inputActions.Player.Move.Enable();
+        inputActions.Player.Shoot.Enable();
+    }
+    
+    
+
     [ServerRpc]
     private void MoveServerRpc(Vector2 input)
     {
@@ -129,7 +149,7 @@ public class Player : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void ShootServerRpc()
+    private void ShootServerRpc(ulong playerID)
     {
         if (bulletPrefab && shootPoint)
         {
@@ -140,7 +160,7 @@ public class Player : NetworkBehaviour
             {
                 bulletNetworkObject.Spawn(true); 
                 Bullet bulletScript = bullet.GetComponent<Bullet>();
-                bulletScript.Initialize(shootPoint.up);
+                bulletScript.Initialize(shootPoint.up, playerID);
             }
         }
     }

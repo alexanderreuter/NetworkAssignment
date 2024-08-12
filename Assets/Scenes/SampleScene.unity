@@ -720,9 +720,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Player X: 0
-
-'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -856,9 +854,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Player X: 0
-
-'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1275,9 +1271,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Player X: 0
-
-'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1901,9 +1895,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Player X: 0
-
-'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2979,7 +2971,6 @@ GameObject:
   - component: {fileID: 1771534639}
   - component: {fileID: 1771534638}
   - component: {fileID: 1771534637}
-  - component: {fileID: 1771534640}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -3066,25 +3057,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1771534640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1771534636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7944c0f925b00bf45b43b771b67cab27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hostButton: {fileID: 1491185710}
-  joinButton: {fileID: 2042220323}
-  quitButton: {fileID: 2021679201}
-  menuCanvas: {fileID: 52843841}
-  resumeButton: {fileID: 1750567451}
-  disconnectButton: {fileID: 1351788385}
-  pauseCanvas: {fileID: 1021684546}
 --- !u!1 &1897636945
 GameObject:
   m_ObjectHideFlags: 0
@@ -3477,6 +3449,7 @@ GameObject:
   - component: {fileID: 2104507880}
   - component: {fileID: 2104507884}
   - component: {fileID: 2104507885}
+  - component: {fileID: 2104507886}
   m_Layer: 5
   m_Name: PlayerUI
   m_TagString: Untagged
@@ -3607,6 +3580,29 @@ MonoBehaviour:
   inputField: {fileID: 1576181140}
   displayText: {fileID: 1511364526}
   messageLifeTime: 10
+--- !u!114 &2104507886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104507879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7944c0f925b00bf45b43b771b67cab27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hostButton: {fileID: 1491185710}
+  joinButton: {fileID: 2042220323}
+  quitButton: {fileID: 2021679201}
+  menuCanvas: {fileID: 52843841}
+  resumeButton: {fileID: 1750567451}
+  disconnectButton: {fileID: 1351788385}
+  pauseCanvas: {fileID: 1021684546}
+  player1Text: {fileID: 697516117}
+  player2Text: {fileID: 1433456673}
+  player3Text: {fileID: 712552947}
+  player4Text: {fileID: 1008120918}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
