@@ -128,9 +128,6 @@ public class NetworkManagerUI : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void SetPlayerUIServerRpc(ulong clientId, bool removeUI, int playerScore)
     {
-        if (removeUI)
-            Debug.Log("Remove UI True called");
-        
         if (playerScore == 0 || removeUI)
         {
             RecieveSetPlayerUIClientRpc(clientId, removeUI, playerScore);
