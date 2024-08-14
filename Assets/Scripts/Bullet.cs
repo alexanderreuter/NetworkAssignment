@@ -40,12 +40,16 @@ public class Bullet : NetworkBehaviour
         {
             if (collision.GetComponent<Player>())
             {
+                Unity.Netcode.NetworkObject playerNetworkObject = collision.gameObject.GetComponent<NetworkObject>();
+                
                 NetworkManagerUI networkManagerUI = FindObjectOfType<NetworkManagerUI>();
+                networkManagerUI.SetPlayerUIServerRpc(playerID, false, 1); //fix
                 
-                networkManagerUI.SetPlayerUIServerRpc(playerID, false, 1);
+                SpawnManager spawnManager = FindObjectOfType<SpawnManager>();
+                spawnManager.OnPlayerDeath(playerNetworkObject.OwnerClientId);
                 
+                playerNetworkObject.Despawn();
                 Destroy(collision.gameObject);
-                
             }
             
             Destroy(gameObject);

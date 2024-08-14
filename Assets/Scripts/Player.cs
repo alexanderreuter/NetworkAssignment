@@ -28,7 +28,7 @@ public class Player : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (IsLocalPlayer)
+        if (IsOwner)
         {
             inputActions.Enable();
             inputActions.Player.Move.performed += OnMove;
@@ -38,21 +38,21 @@ public class Player : NetworkBehaviour
         }
     }
 
-    private void OnDisable()
+    public override void OnNetworkDespawn()
     {
-        if (IsLocalPlayer)
+        if (IsOwner)
         {
-        inputActions.Player.Move.performed -= OnMove;
-        inputActions.Player.Move.canceled -= OnStopMove;
-        inputActions.Player.Shoot.performed -= OnShoot;
-        inputActions.Player.Chat.performed -= OnChat;
-        inputActions.Disable();
+            inputActions.Player.Move.performed -= OnMove;
+            inputActions.Player.Move.canceled -= OnStopMove;
+            inputActions.Player.Shoot.performed -= OnShoot;
+            inputActions.Player.Chat.performed -= OnChat;
+            inputActions.Disable();
         }
     }
 
     private void OnMove(InputAction.CallbackContext ctx)
     {
-        if (IsLocalPlayer)
+        if (IsOwner)
         {
             localMoveInput = ctx.ReadValue<Vector2>();
             MoveServerRpc(localMoveInput);
@@ -61,7 +61,7 @@ public class Player : NetworkBehaviour
 
     private void OnStopMove(InputAction.CallbackContext ctx)
     {
-        if (IsLocalPlayer)
+        if (IsOwner)
         {
             localMoveInput = Vector2.zero;
             MoveServerRpc(localMoveInput);
@@ -70,7 +70,7 @@ public class Player : NetworkBehaviour
 
     private void OnShoot(InputAction.CallbackContext ctx)
     {
-        if (IsLocalPlayer)
+        if (IsOwner)
         {
             ShootServerRpc(NetworkManager.Singleton.LocalClientId);
         }
@@ -78,7 +78,7 @@ public class Player : NetworkBehaviour
 
     private void OnChat(InputAction.CallbackContext ctx)
     {
-        if (IsLocalPlayer)
+        if (IsOwner)
         {
             chatManager.inputField.gameObject.SetActive(!chatManager.inputField.gameObject.activeSelf);
 
@@ -97,7 +97,7 @@ public class Player : NetworkBehaviour
     
     void Update()
     {
-        if (IsLocalPlayer) // Update local stuff
+        if (IsOwner) // Update local stuff
         {
             transform.position += (Vector3)localMoveInput * speed * Time.deltaTime;
             UpdateRotation();
@@ -134,8 +134,6 @@ public class Player : NetworkBehaviour
         inputActions.Player.Shoot.Enable();
     }
     
-    
-
     [ServerRpc]
     private void MoveServerRpc(Vector2 input)
     {
