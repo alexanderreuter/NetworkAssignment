@@ -94,12 +94,18 @@ public class NetworkManagerUI : NetworkBehaviour
 
     private void OnClientDisconnect(ulong clientId)
     {
-        menuCanvas.gameObject.SetActive(true);
-        isInMainMenu = true;
-        pauseCanvas.gameObject.SetActive(false);
-        isInPauseMenu = false;
-
-        SetPlayerUIServerRpc(clientId, true, 0);
+        if (IsServer)
+        {
+            SetPlayerUIServerRpc(clientId, true, 0);
+        }
+        
+        if (networkManager.LocalClientId == clientId)
+        {
+            menuCanvas.gameObject.SetActive(true);
+            isInMainMenu = true;
+            pauseCanvas.gameObject.SetActive(false);
+            isInPauseMenu = false;
+        }
     }
 
     private void TogglePauseMenu(InputAction.CallbackContext ctx)
@@ -119,22 +125,27 @@ public class NetworkManagerUI : NetworkBehaviour
         }
     }
 
-    [ServerRpc(RequireOwnership = false)] //ändra?
+    [ServerRpc(RequireOwnership = false)]
     public void SetPlayerUIServerRpc(ulong clientId, bool removeUI, int playerScore)
     {
-        if (playerScore == 0)
+        if (removeUI)
+            Debug.Log("Remove UI True called");
+        
+        if (playerScore == 0 || removeUI)
+        {
             RecieveSetPlayerUIClientRpc(clientId, removeUI, playerScore);
+        }
         else
         {
             if (playerScoreDictionary.TryGetValue(clientId, out int value))
             {
-                playerScoreDictionary[clientId] = value++;
-                RecieveSetPlayerUIClientRpc(clientId, removeUI, value++);
+                playerScoreDictionary[clientId] = value + 1;
+                RecieveSetPlayerUIClientRpc(clientId, removeUI, value + 1);
             }
         }
         UpdateScoreClientRpc(player1Text.text, player2Text.text, player3Text.text, player4Text.text);
     }
-
+    
     [ClientRpc]
     private void RecieveSetPlayerUIClientRpc(ulong clientId, bool removeUI, int playerScore)
     {
@@ -148,54 +159,34 @@ public class NetworkManagerUI : NetworkBehaviour
             case 0:
                 player1Text.text = formatedScore;
 
-                try
-                {
-                    playerScoreDictionary.Add(clientId, playerScore);
-                }
-                catch (ArgumentException)
-                {
-                    Debug.Log("Key already exists");
-                }
-                
+                if (playerScoreDictionary.ContainsKey(clientId))
+                    break;
+
+                playerScoreDictionary.Add(clientId, playerScore);
                 break;
             case 1:
                 player2Text.text = formatedScore;
                 
-                try
-                {
-                    playerScoreDictionary.Add(clientId, playerScore);
-                }
-                catch (ArgumentException)
-                {
-                    Debug.Log("Key already exists");
-                }
-                
+                if (playerScoreDictionary.ContainsKey(clientId))
+                    break;
+
+                playerScoreDictionary.Add(clientId, playerScore);
                 break;
             case 2:
                 player3Text.text = formatedScore;
                 
-                try
-                {
-                    playerScoreDictionary.Add(clientId, playerScore);
-                }
-                catch (ArgumentException)
-                {
-                    Debug.Log("Key already exists");
-                }
-                
+                if (playerScoreDictionary.ContainsKey(clientId))
+                    break;
+
+                playerScoreDictionary.Add(clientId, playerScore);
                 break;
             case 3:
                 player4Text.text = formatedScore;
                 
-                try
-                {
-                    playerScoreDictionary.Add(clientId, playerScore);
-                }
-                catch (ArgumentException)
-                {
-                    Debug.Log("Key already exists");
-                }
-                
+                if (playerScoreDictionary.ContainsKey(clientId))
+                    break;
+
+                playerScoreDictionary.Add(clientId, playerScore);
                 break;
         }
     }
