@@ -1,5 +1,13 @@
 # NetworkAssignment
- 
+
+Game design.
+
+Network features.
+
+Challnges and faced solutions.
+
+Reflection.
+
 Update local first:
 Movement -> position, rotation
 
