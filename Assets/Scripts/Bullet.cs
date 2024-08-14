@@ -8,7 +8,6 @@ public class Bullet : NetworkBehaviour
     [SerializeField] private float speed = 20f;
     [SerializeField] private float lifetime = 5f;
     private ulong playerID;
-
     private Rigidbody2D rb;
 
     private void Awake()
@@ -43,7 +42,7 @@ public class Bullet : NetworkBehaviour
                 Unity.Netcode.NetworkObject playerNetworkObject = collision.gameObject.GetComponent<NetworkObject>();
                 
                 NetworkManagerUI networkManagerUI = FindObjectOfType<NetworkManagerUI>();
-                networkManagerUI.SetPlayerUIServerRpc(playerID, false, 1); //fix
+                networkManagerUI.SetPlayerUIServerRpc(playerID, false, 1);
                 
                 SpawnManager spawnManager = FindObjectOfType<SpawnManager>();
                 spawnManager.OnPlayerDeath(playerNetworkObject.OwnerClientId);
